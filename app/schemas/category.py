@@ -13,3 +13,13 @@ class CategoryBase(CamelModel):
 
 class CategoryCreate(CategoryBase):
     id: str | None = Field(default=None, max_length=40)
+
+
+class CategoryUpdate(CamelModel):
+    name: str | None = Field(default=None, min_length=1, max_length=60)
+    icon: str | None = Field(default=None, min_length=1, max_length=16)
+    color: str | None = Field(default=None, pattern=r"^#[0-9a-fA-F]{6}$")
+
+
+class CategoryOut(CategoryBase):
+    id: str
