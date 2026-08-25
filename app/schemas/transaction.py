@@ -26,3 +26,15 @@ class TransactionUpdate(CamelModel):
     note: str | None = Field(default=None, max_length=120)
     date: Date | None = None
     recurring: bool | None = None
+
+
+class TransactionOut(TransactionBase):
+    id: str
+
+
+class BulkDelete(CamelModel):
+    ids: list[str] = Field(min_length=1, max_length=1000)
+
+
+class BulkResult(CamelModel):
+    deleted: int
