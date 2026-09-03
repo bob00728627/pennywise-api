@@ -11,3 +11,7 @@ from app.schemas.user import PasswordChange, Token, UserCreate, UserOut
 from app.services.seed import create_default_categories, seed_demo_data
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+def _token_for(user: User) -> Token:
+    return Token(access_token=create_access_token(str(user.id)), user=UserOut.model_validate(user))
