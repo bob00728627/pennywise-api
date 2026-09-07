@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app import models  # noqa: F401  (register tables)
 from app.core.config import get_settings
 from app.database import Base, engine
+from app.routers import auth
 
 
 @asynccontextmanager
@@ -14,7 +16,18 @@ async def lifespan(_: FastAPI):
 
 
 config = get_settings()
-app = FastAPI(title=config.app_name, version="0.1.0", lifespan=lifespan)
+app = FastAPI(title=config.app_name, version="1.0.0", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=config.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+for r in (auth,):
+    app.include_router(r.router)
 
 
 @app.get("/api/health", tags=["meta"])
