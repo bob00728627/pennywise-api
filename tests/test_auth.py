@@ -27,3 +27,25 @@ def test_login_and_me(client):
     token = res.json()["accessToken"]
     me = client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
     assert me.json()["name"] == "Alex"
+
+
+def test_wrong_password(client):
+    register(client)
+    res = client.post("/api/auth/token", data={"username": "alex@example.com", "password": "nope-nope"})
+    assert res.status_code == 401
+
+
+def test_protected_routes_need_token(client):
+    assert client.get("/api/transactions").status_code == 401
+    assert client.get("/api/auth/me", headers={"Authorization": "Bearer garbage"}).status_code == 401
+
+
+def test_change_password(client, auth):
+    bad = client.post("/api/auth/password", headers=auth,
+                      json={"currentPassword": "wrong", "newPassword": "newpassword"})
+    assert bad.status_code == 400
+    ok = client.post("/api/auth/password", headers=auth,
+                     json={"currentPassword": "supersecret", "newPassword": "newpassword"})
+    assert ok.status_code == 204
+    res = client.post("/api/auth/token", data={"username": "alex@example.com", "password": "newpassword"})
+    assert res.status_code == 200
