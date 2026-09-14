@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app import models  # noqa: F401  (register tables)
 from app.core.config import get_settings
 from app.database import Base, engine
-from app.routers import auth
+from app.routers import auth, categories
 
 
 @asynccontextmanager
@@ -26,7 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth,):
+for r in (auth, categories):
     app.include_router(r.router)
 
 
