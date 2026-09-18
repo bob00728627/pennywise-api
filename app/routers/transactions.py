@@ -21,3 +21,5 @@ from app.schemas.transaction import (
 from app.services.csv_export import transactions_to_csv
 
 router = APIRouter(prefix="/api/transactions", tags=["transactions"])
+
+SortKey = Literal["date-desc", "date-asc", "amount-desc", "amount-asc"]
