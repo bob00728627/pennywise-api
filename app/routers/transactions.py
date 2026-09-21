@@ -23,3 +23,18 @@ from app.services.csv_export import transactions_to_csv
 router = APIRouter(prefix="/api/transactions", tags=["transactions"])
 
 SortKey = Literal["date-desc", "date-asc", "amount-desc", "amount-asc"]
+
+
+def _ensure_category(db: Session, user: User, category_id: str, kind: str) -> None:
+    cat = db.get(Category, (category_id, user.id))
+    if not cat:
+        raise HTTPException(422, "Unknown category")
+    if cat.type != kind:
+        raise HTTPException(422, f"Category '{cat.name}' is for {cat.type}")
+
+
+def _get(db: Session, user: User, tx_id: str) -> Transaction:
+    tx = db.get(Transaction, tx_id)
+    if not tx or tx.user_id != user.id:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Transaction not found")
+    return tx
