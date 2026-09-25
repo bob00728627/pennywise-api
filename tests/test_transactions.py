@@ -48,3 +48,28 @@ def test_filters_search_and_sort(client, auth):
     assert ids(q="food & dining")["total"] == 1
     assert ids(**{"from": "2026-08-10", "to": "2026-08-16"})["total"] == 1
     assert [t["amount"] for t in ids(sort="amount-asc")["items"]] == [5, 50, 1000]
+
+
+def test_pagination(client, auth):
+    for i in range(25):
+        make(client, auth, amount=i + 1)
+    page = client.get("/api/transactions", headers=auth, params={"page": 3, "pageSize": 10}).json()
+    assert page["total"] == 25 and page["pages"] == 3 and len(page["items"]) == 5
+
+
+def test_bulk_delete_only_own(client, auth):
+    a, b = make(client, auth), make(client, auth)
+    other = register(client, "other@example.com")
+    c = make(client, other)
+    res = client.post("/api/transactions/bulk-delete", headers=auth, json={"ids": [a["id"], b["id"], c["id"]]})
+    assert res.json()["deleted"] == 2
+    assert client.get(f"/api/transactions/{c['id']}", headers=other).status_code == 200
+
+
+def test_csv_export(client, auth):
+    make(client, auth, note='Dinner, "fancy"')
+    res = client.get("/api/transactions/export.csv", headers=auth)
+    assert res.headers["content-type"].startswith("text/csv")
+    lines = res.text.strip().splitlines()
+    assert lines[0] == "Date,Type,Category,Amount,Note"
+    assert '"Dinner, ""fancy"""' in lines[1]
