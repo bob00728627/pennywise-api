@@ -17,3 +17,11 @@ def savings_rate(income: float, expense: float) -> float:
 
 def pct_change(cur: float, prev: float) -> float | None:
     return None if prev == 0 else round((cur - prev) / prev * 100, 1)
+
+
+def spent_by_category(txs: Iterable[Transaction]) -> dict[str, float]:
+    acc: dict[str, float] = defaultdict(float)
+    for t in txs:
+        if t.type == "expense":
+            acc[t.category_id] += t.amount
+    return {k: round(v, 2) for k, v in acc.items()}
