@@ -13,3 +13,7 @@ from app.services.dates import days_left_in_month, month_bounds, month_key
 from app.services.stats import spent_by_category
 
 router = APIRouter(prefix="/api/budgets", tags=["budgets"])
+
+
+def _status(pct: float) -> str:
+    return "over" if pct >= 100 else "warn" if pct >= 80 else "ok"
