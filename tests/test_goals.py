@@ -21,3 +21,21 @@ def test_deposit_and_withdraw(client, auth):
     assert g["completed"] is True
     g = client.post(f"/api/goals/{g['id']}/deposit", headers=auth, json={"amount": -5000}).json()
     assert g["saved"] == 0
+
+
+def test_zero_deposit_rejected(client, auth):
+    g = new_goal(client, auth)
+    assert client.post(f"/api/goals/{g['id']}/deposit", headers=auth, json={"amount": 0}).status_code == 422
+
+
+def test_update_and_delete_goal(client, auth):
+    g = new_goal(client, auth)
+    assert client.patch(f"/api/goals/{g['id']}", headers=auth, json={"target": 200}).json()["percent"] == 50
+    assert client.delete(f"/api/goals/{g['id']}", headers=auth).status_code == 204
+    assert client.get("/api/goals", headers=auth).json() == []
+
+
+def test_goals_sorted_by_deadline(client, auth):
+    new_goal(client, auth, name="Later", deadline=(date.today() + timedelta(days=200)).isoformat())
+    new_goal(client, auth, name="Sooner", deadline=(date.today() + timedelta(days=20)).isoformat())
+    assert [g["name"] for g in client.get("/api/goals", headers=auth).json()] == ["Sooner", "Later"]
