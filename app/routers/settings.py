@@ -13,3 +13,8 @@ from app.schemas.user import SettingsUpdate, UserOut
 from app.services.seed import create_default_categories, seed_demo_data
 
 router = APIRouter(prefix="/api", tags=["settings"])
+
+
+def _wipe(db: Session, user: User, categories: bool = True) -> None:
+    for model in (Transaction, Budget, Goal) + ((Category,) if categories else ()):
+        db.execute(delete(model).where(model.user_id == user.id))
