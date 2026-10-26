@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      PENNYWISE_SECRET_KEY: ${PENNYWISE_SECRET_KEY:-change-me}
+      PENNYWISE_DATABASE_URL: sqlite:////data/pennywise.db
+    volumes:
+      - pennywise-data:/data
+
+volumes:
+  pennywise-data:
