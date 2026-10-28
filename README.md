@@ -14,3 +14,20 @@ payloads match the frontend's TypeScript types one-to-one.
 - **Reports** — dashboard summary (balance, month income/expense, change vs last month, savings rate) and 3/6/12-month reports with monthly rows and category breakdown.
 - **Settings & data** — name, currency and theme; full JSON backup export/import in the same format as the frontend; reset to empty or demo data.
 - Every user's data is isolated; all routes except auth and health need a token.
+
+## 🚀 Getting started
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+cp .env.example .env
+uvicorn app.main:app --reload
+```
+
+Open http://localhost:8000/docs for interactive Swagger docs.
+
+With Docker:
+
+```bash
+docker compose up --build
+```
