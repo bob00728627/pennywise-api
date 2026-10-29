@@ -31,3 +31,10 @@ With Docker:
 ```bash
 docker compose up --build
 ```
+
+## 🧪 Tests and lint
+
+```bash
+pytest       # 44 tests
+ruff check .
+```
