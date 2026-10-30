@@ -38,3 +38,29 @@ docker compose up --build
 pytest       # 44 tests
 ruff check .
 ```
+
+## 📚 Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| POST | `/api/auth/register` | Create account (`seedDemo: true` loads sample data) |
+| POST | `/api/auth/token` | Log in (form: `username`, `password`) |
+| GET | `/api/auth/me` | Current user |
+| POST | `/api/auth/password` | Change password |
+| GET/POST | `/api/categories` | List (`?type=`) / create |
+| PATCH/DELETE | `/api/categories/{id}` | Update / delete |
+| GET/POST | `/api/transactions` | List with `q, type, categoryId, from, to, sort, page, pageSize` / create |
+| GET/PATCH/DELETE | `/api/transactions/{id}` | Read / update / delete |
+| POST | `/api/transactions/bulk-delete` | Delete many by id |
+| GET | `/api/transactions/export.csv` | CSV export (same filters) |
+| GET/PUT | `/api/budgets` | Status for `?month=YYYY-MM` / upsert by category |
+| DELETE | `/api/budgets/{id}` | Delete budget |
+| GET/POST | `/api/goals` | List / create |
+| PATCH/DELETE | `/api/goals/{id}` | Update / delete |
+| POST | `/api/goals/{id}/deposit` | Deposit (positive) or withdraw (negative) |
+| GET | `/api/reports/summary` | Dashboard KPIs |
+| GET | `/api/reports?months=6` | Report for 3, 6 or 12 months |
+| PATCH | `/api/settings` | Update name, currency, theme |
+| GET/POST | `/api/backup` | Export / import full backup |
+| POST | `/api/reset?demo=true` | Reset data |
+| GET | `/api/health` | Health check |
