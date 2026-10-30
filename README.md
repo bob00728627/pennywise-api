@@ -64,3 +64,14 @@ ruff check .
 | GET/POST | `/api/backup` | Export / import full backup |
 | POST | `/api/reset?demo=true` | Reset data |
 | GET | `/api/health` | Health check |
+
+## ⚙️ Configuration
+
+Environment variables (prefix `PENNYWISE_`, or a `.env` file):
+
+| Variable | Default |
+| --- | --- |
+| `SECRET_KEY` | `dev-secret-change-me` — **change in production** |
+| `DATABASE_URL` | `sqlite:///./pennywise.db` |
+| `ACCESS_TOKEN_MINUTES` | `1440` |
+| `CORS_ORIGINS` | `["http://localhost:5173", "http://localhost:4173"]` |
