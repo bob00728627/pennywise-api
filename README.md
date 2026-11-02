@@ -75,3 +75,21 @@ Environment variables (prefix `PENNYWISE_`, or a `.env` file):
 | `DATABASE_URL` | `sqlite:///./pennywise.db` |
 | `ACCESS_TOKEN_MINUTES` | `1440` |
 | `CORS_ORIGINS` | `["http://localhost:5173", "http://localhost:4173"]` |
+
+## 🗂 Project structure
+
+```
+app/
+├── core/       # settings, security (hashing, JWT), auth dependency, ids
+├── models/     # SQLAlchemy models
+├── schemas/    # Pydantic request/response models (camelCase)
+├── services/   # stats, dates, seed data, CSV
+├── routers/    # API routes per feature
+├── database.py
+└── main.py
+tests/          # pytest suite
+```
+
+## 📄 License
+
+MIT
