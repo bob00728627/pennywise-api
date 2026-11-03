@@ -16,7 +16,8 @@ async def lifespan(_: FastAPI):
 
 
 config = get_settings()
-app = FastAPI(title=config.app_name, version="1.0.0", lifespan=lifespan)
+app = FastAPI(title=config.app_name, version="1.0.0", lifespan=lifespan,
+              description="REST API for the Pennywise personal finance tracker.")
 
 app.add_middleware(
     CORSMiddleware,
