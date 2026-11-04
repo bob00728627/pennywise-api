@@ -31,6 +31,11 @@ for r in (auth, categories, transactions, budgets, goals, reports, settings):
     app.include_router(r.router)
 
 
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    return RedirectResponse("/docs")
+
+
 @app.get("/api/health", tags=["meta"])
 def health() -> dict[str, str]:
     return {"status": "ok", "version": app.version}
