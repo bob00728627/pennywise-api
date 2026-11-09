@@ -1,6 +1,7 @@
 [project]
 name = "pennywise-api"
 version = "1.0.0"
+license = "MIT"
 description = "REST API for the Pennywise personal finance tracker"
 requires-python = ">=3.11"
 
